@@ -3,26 +3,32 @@ import java.util.*;
 public class Problem2 { 
 
    public static void main(String[] args) { 
-      new Problem2().start();
+      String arg = args[0];
+      new Problem2().start(arg);
    }
 
-   public void start() {
-      List p = getBlankPositions("The cat sat on the mat.");
-      for (int i = 0; i < p.size(); i++) {
-         System.out.print(p.get(i) + " ");
-      }
-     
-      System.out.println("\n---------------------");
-      System.out.println("Words: " + countWords("The cat sat on the mat."));
-      System.out.println("---------------------");
-      
-      String[] words = getWords("The cat sat on the mat.");
+   public void start(String arg) {
+
+      List blankPositions = getBlankPositions(arg);
+      int wordCount = countWords(arg);
+      String[] words = getWords(arg);
+
+      System.out.print("Blank Positions: ");
+      for (int i = 0; i < blankPositions.size(); i++)
+         System.out.print(blankPositions.get(i) + " ");
+
+      System.out.print("Word Count: " + wordCount);
+
+      System.out.print("Words: ");
       for (int i = 0; i < words.length; i++) {
-         System.out.println(words[i]);
-      }
+         System.out.print(words[i] + " ");
+
    }
+
+   // SOLUTION BEGINS ---------------------------------------
 
    public List<Integer> getBlankPositions(String s) {
+      // take string, find first index of space, then cut string to what's left.
       List<Integer> positions = new ArrayList<Integer>();
       String changer = s;
       int adjuster = 0;
@@ -41,7 +47,7 @@ public class Problem2 {
    }
 
    public String[] getWords(String s) {
-      // MUCH easier method: 
+      // MUCH easier method:
       // String[] words = s.split(" "); that's it!
       // But required to use previous two methods
 
@@ -55,31 +61,6 @@ public class Problem2 {
       return words;
    }
 
+   // SOLUTION ENDS ---------------------------------------
+
 }
-
-// My Problem
-
-/*
-
-I can very easily solve any of the problems, but I need a lot of testing before I can finally get to the answer.
-I need to learn to debug much faster and much more accurately (hopefully even first try).
-
-*/
-
-/* JUNK
-
-
-
-      // take string, find first index of space, then cut string to what's left.
-
-     List positions = new ArrayList<Integer>();
-      char[] broken = s.toCharArray();
-      for (int i = 0; i < broken.length; i++) {
-         if (broken[i].equals(" "))
-            positions.add(i);
-      }
-
-
-
-      */
-
