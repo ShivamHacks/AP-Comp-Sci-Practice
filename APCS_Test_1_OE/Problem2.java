@@ -3,6 +3,13 @@ import java.util.*;
 public class Problem2 { 
 
    public static void main(String[] args) { 
+      // input format: Sentence that starts with word, ends with punctuation.
+      // ex: The cat sat on the mat.
+      // Output:
+      // Blank Positions: 3 7 11 14 18 
+      // Word Count: 6
+      // Words: The cat sat on the mat
+      
       String arg = args[0];
       new Problem2().start(arg);
    }
@@ -16,12 +23,14 @@ public class Problem2 {
       System.out.print("Blank Positions: ");
       for (int i = 0; i < blankPositions.size(); i++)
          System.out.print(blankPositions.get(i) + " ");
+      System.out.println();
 
-      System.out.print("Word Count: " + wordCount);
+      System.out.print("Word Count: " + wordCount + "\n");
 
       System.out.print("Words: ");
-      for (int i = 0; i < words.length; i++) {
+      for (int i = 0; i < words.length; i++)
          System.out.print(words[i] + " ");
+      System.out.println();
 
    }
 
