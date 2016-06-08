@@ -14,17 +14,21 @@ import java.net.*;
 public class FindExtrema { 
 
    public static void main(String[] args) { 
+
       String tableLoc = args[0];
-      String titleColumn = args[1];
-      String sortColumn = args[2]; // from zero to n-1
-      boolean firstRowHeader = Boolean.parseBoolean(args[3]);
+      //String ticker = args[0];
+      //String startDate = args[1];
+      //String titleColumn = args[1];
+     // String sortColumn = args[2]; // from zero to n-1
+     // boolean firstRowHeader = Boolean.parseBoolean(args[3]);
 
       //String ticker = args[3];
       //String sDate = args[4];
       ////String eDate = args[5];
      // String url = getURL(ticker, sDate, eDate);
 
-      new FindExtrema().start(tableLoc, titleColumn, sortColumn, firstRowHeader);
+      //new FindExtrema().start(tableLoc, titleColumn, sortColumn, firstRowHeader);
+      new FindExtrema().start(tableLoc);
    }
 
    /*public static String getURL(String ticker, String startDate, String endDate) {
@@ -43,9 +47,24 @@ public class FindExtrema {
       return base + params;
    } */
 
-   List<String[]> table = new ArrayList<String[]>();
+   public void start(String tableLoc) {
+      try {
+         BufferedReader br = new BufferedReader(new FileReader(tableLoc));
+         br.readLine();
+         String line = "";
+         while (( line = br.readLine()) != null) {
+            String[] data = line.split(",");
+            System.out.println("Company: " + data[0] + " Date: " + data[1]);
+            format(data[0], data[1]);
+         }
+         br.close();
+         System.out.println("---------- DONE ----------");
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
 
-   public void start(String tableLoc, String titleColumn, String sortColumn, boolean firstRowHeader) {
+   /*public void start(String tableLoc, String titleColumn, String sortColumn, boolean firstRowHeader) {
       try {
          //URL dataURL = new URL(url); //Reading
          //URLConnection yc = dataURL.openConnection();
@@ -64,9 +83,42 @@ public class FindExtrema {
       } catch (Exception e) {
          e.printStackTrace();
       }
+   }*/
+
+   public void format(String ticker, String endDate) {
+      List<String[]> table = new ArrayList<String[]>();
+
+      String[] eDate = endDate.split("-");
+      int mm = Integer.parseInt(eDate[0]) - 1;
+      String dd = eDate[1];
+      int yyE = Integer.parseInt(eDate[2]);
+      int yyS = yyE - 1;
+
+      String url = "http://real-chart.finance.yahoo.com/table.csv?s=" 
+      + ticker + "&a=" + mm + "&b=" + dd + "&c=" + yyS 
+      + "&d=" + mm + "&e=" + dd + "&f=" + yyE + "&g=d&ignore=.csv";
+
+      //System.out.println(url);
+
+      try {
+         URL dataURL = new URL(url); //Reading
+         URLConnection yc = dataURL.openConnection();
+         BufferedReader br = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+         //BufferedReader br = new BufferedReader(new FileReader(tableLoc));
+         br.readLine();
+         String line = "";
+         while (( line = br.readLine()) != null) {
+            String[] data = line.split(",");
+            table.add(data);
+         }
+         br.close();
+         calculate(table, "0", "4");
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
    }
 
-   public void calculate(String titleColumn, String sortColumn) {
+   public void calculate(List<String[]> table, String titleColumn, String sortColumn) {
       double min = Double.MAX_VALUE;
       double max = Double.MIN_VALUE;
       int minIndex = -1;
